@@ -1,0 +1,198 @@
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+    /* ==================================
+       SUPABASE CONFIGURATION
+    ================================== */
+
+    const SUPABASE_URL = "https://YOUR_PROJECT.supabase.co";
+    const SUPABASE_ANON_KEY = "YOUR_ANON_KEY";
+
+    const supabaseClient = supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+    );
+
+    /* ==================================
+       AUTHENTICATION
+    ================================== */
+
+    async function checkAuth() {
+        try {
+            const { data, error } =
+                await supabaseClient.auth.getSession();
+
+            if (error) throw error;
+
+            if (!data.session) {
+                window.location.href = "admin-login.html";
+                return;
+            }
+
+            loadData();
+
+        } catch (error) {
+            console.error("Authentication Error:", error);
+            alert("Unable to verify login.");
+        }
+    }
+
+    /* ==================================
+       LOAD DATA
+    ================================== */
+
+    async function loadData() {
+        try {
+
+            const { data: registrations, error: regError } =
+                await supabaseClient
+                    .from("registrations")
+                    .select("*")
+                    .order("created_at", { ascending: false });
+
+            const { data: requests, error: reqError } =
+                await supabaseClient
+                    .from("employer_requests")
+                    .select("*")
+                    .order("created_at", { ascending: false });
+
+            if (regError) throw regError;
+            if (reqError) throw reqError;
+
+            displayRegistrations(registrations);
+            displayRequests(requests);
+
+        } catch (error) {
+            console.error("Load Data Error:", error);
+            alert("Failed to load data.");
+        }
+    }
+
+    /* ==================================
+       DISPLAY REGISTRATIONS
+    ================================== */
+
+    function displayRegistrations(data) {
+        const container = document.getElementById("regList");
+
+        if (!data || data.length === 0) {
+            container.innerHTML = "<p>No registrations found.</p>";
+            return;
+        }
+
+        container.innerHTML = data.map(reg => `
+        <div class="card">
+            <strong>${reg.full_names}</strong>
+            <br>
+
+            Position: ${reg.position}
+            <br>
+
+            ID: ${reg.id_number}
+            <br>
+
+            Phone: ${reg.phone}
+            <br>
+
+            Address: ${reg.address}
+            <br>
+
+            Salary: R${reg.salary}
+            <br>
+
+            Registration Fee: R${reg.fee}
+            <br>
+
+            <small>
+                ${new Date(reg.created_at).toLocaleString()}
+            </small>
+            <br>
+
+            <a href="${reg.signature}"
+               target="_blank">
+               View Signature
+            </a>
+        </div>
+    `).join("");
+    }
+
+    /* ==================================
+       DISPLAY EMPLOYER REQUESTS
+    ================================== */
+
+    function displayRequests(data) {
+        const container = document.getElementById("reqList");
+
+        if (!data || data.length === 0) {
+            container.innerHTML = "<p>No employer requests found.</p>";
+            return;
+        }
+
+        container.innerHTML = data.map(request => `
+        <div class="card">
+            <strong>${request.name}</strong>
+            <br>
+
+            Service: ${request.service_type}
+            <br>
+
+            Phone: ${request.phone}
+            <br>
+
+            Location: ${request.location}
+            <br>
+
+            Message: ${request.message}
+            <br>
+
+            <small>
+                ${new Date(request.created_at).toLocaleString()}
+            </small>
+            <br><br>
+
+            <a href="https://wa.me/${request.phone}"
+               target="_blank"
+               class="whatsapp-btn">
+                WhatsApp Employer
+            </a>
+        </div>
+    `).join("");
+    }
+
+    /* ==================================
+       LOGOUT
+    ================================== */
+
+    document
+        .getElementById("logout")
+        .addEventListener("click", logout);
+
+    async function logout() {
+        try {
+            await supabaseClient.auth.signOut();
+
+            localStorage.clear();
+
+            window.location.href = "admin-login.html";
+
+        } catch (error) {
+            console.error("Logout Error:", error);
+        }
+    }
+
+    /* ==================================
+       EXPORT CSV
+    ================================== */
+
+    function exportCSV() {
+        alert(
+            "Use Supabase Dashboard → Table Editor → Export CSV"
+        );
+    }
+
+    /* ==================================
+       INITIALIZE
+    ================================== */
+
+    checkAuth();
+</script>

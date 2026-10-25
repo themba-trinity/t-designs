@@ -1,0 +1,20 @@
+@media screen and (min-width: 768px) {
+
+    .hamburger {
+        display: none;
+    }
+
+    nav {
+        display: flex;
+    }
+
+    .navigation {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .plan-grid {
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+    }
+}

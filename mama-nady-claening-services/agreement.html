@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+< lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mama Nady Cleaning Services - Home</title>
+    <meta name="description" content="Deep cleaning, office and working place cleaning and house keeping">
+    <meta name="author" content="Thembinkosi Gumbo">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fontsgstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=opens+sans:wght@400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles/large.css">
+    <link rel="stylesheet" href="styles/small.css">
+    
+    <script type="module" src="scripts/dates.js"></script>
+    <script type="module" src="scripts/navigation.js"></script>
+    <script type="module" src="scripts/scripts.js"></script>
+</head>
+
+<body>
+    <header>
+        <img src="images/mama-nady-logo.jpg" alt="Mama Nady logo" width="40" height="40" loading="lazy">
+        <div class="brand"><strong>MAMA NADY CLEANING SERVICES</strong> <span>CAPE TOWN | 071 835 8666</span></div>
+        <button id="navBtn" class="hamburger" aria-label="navigation">&#9776;</button>
+        <nav id="Menu">
+            <ul class="navigation">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="reviews.html">Reviews</a></li>
+                <li><a href="agreement.html">Agreement</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        
+        
+            
+                <div class="content">
+                    <h2>EMPLOYMENT PLACEMENT AGREEMENT<br>(Agent and Employee /
+                            Jobseeker)</h2>
+        
+                    <form id="agreementForm">
+                        <label>This Agreement is made on Date: <input type="date" name="date" required></label>
+                        <p><strong>THE AGENT:</strong> Mama Nady Cleaning Services, WhatsApp: 071 835 8666<br>
+                            <strong>AND THE EMPLOYEE:</strong>
+                        </p>
+        
+                        <div class="grid2">
+                            <label>Full Names: <input type="text" name="fullNames" required></label>
+                            <label>ID: <input type="text" name="id" required></label>
+                        </div>
+                        <div class="grid2">
+                            <label>Phone: <input type="tel" name="phone" required></label>
+                            <label>Address: <input type="text" name="address" required></label>
+                        </div>
+                        <div class="grid2">
+                            <label>Position:
+                                <select name="position" required>
+                                    <option value="">Select</option>
+                                    <option>Domestic</option>
+                                    <option>Nanny</option>
+                                    <option>Caregiver</option>
+                                </select>
+                            </label>
+                            <label>Salary: R <input type="number" name="salary" id="salary" required></label>
+                        </div>
+                        <label>Fee: R <input type="number" name="fee" id="fee" required
+                                placeholder="Auto-calculated or enter"></label>
+        
+                        <h3>1. PURPOSE</h3>
+                        <p class="rule">Agent interviewed Employee and will market her. If Employer chooses her after interview,
+                            contract binding and fee must be paid in full.</p>
+        
+                        <h3>2. AGENCY FEE - MUST BE PAID IN FULL</h3>
+                        <p class="rule">2.1 Fee DEPENDS ON SALARY. Agreed fee: R <span id="feeDisplay">__</span></p>
+                        <p class="rule">2.2 Fee payable IN FULL within 24 HOURS after Employer confirms they have chosen you /
+                            after successful Interview.</p>
+                        <p class="rule">2.3 If chosen and refuse to pay, BLACKLISTED, LOSE job, legal action to recover fee.</p>
+                        <p class="rule">2.4 Pay via E-Wallet, Cash Send, Bank Deposit. Proof to 071 835 8666.</p>
+        
+                        <h3>3. NO BYPASS</h3>
+                        <p class="rule">3.1 You may NOT bypass Agent for 12 months.</p>
+                        <p class="rule">3.2 If found working privately, penalty R1,500 plus original fee.</p>
+        
+                        <h3>4. STRICT RULES</h3>
+                        <p class="rule"><strong>A. PHONE:</strong> No TikTok, Facebook, WhatsApp during work. Only lunch break.
+                        </p>
+                        <p class="rule"><strong>B. STEALING:</strong> NO stealing, NO wearing Madam's clothes/jewellery/perfume.
+                        </p>
+                        <p class="rule"><strong>C. BEHAVIOUR:</strong> Stay at premises. No boyfriend/friends/children at work.
+                            No sleeping, alcohol, smoking.</p>
+                        <p class="rule"><strong>D. CHILDREN:</strong> NO shouting/hitting/punching kids. Be gentle. No leaving
+                            kids alone.</p>
+                        <p class="rule"><strong>E. PRIVACY:</strong> NO pics/videos of house/kids. NO posting on
+                            Facebook/TikTok. NO gossip.</p>
+                        <p class="rule"><strong>F. OTHER:</strong> No loans from boss behind Agent. No disrespect.</p>
+        
+                        <h3>5. REFUND: Fee NON-REFUNDABLE once started work.</h3>
+        
+                        <h3>6. DECLARATION BY EMPLOYEE</h3>
+                        <p class="rule">I, undersigned, have read, understood and agree to all terms. I agree once boss chooses
+                            me after interview, I MUST pay fee in full within 24 hours. Failure = forfeit job and still owe fee.
+                            Breaking any rule = dismissal + blacklist + penalty.</p>
+        
+                        <div class="signature-box">
+                            <label>Employee Full Name: <input type="text" name="empName" required></label>
+                            <label>Employee Signature - sign below:</label>
+                            <canvas id="canvas"></canvas>
+                            <button type="button" class="btn btn-secondary" onclick="clearCanvas()">Clear Signature</button>
+                            <div>
+                                <label>Agent: Mama Nady <input type="text" name="agentName" value="Mama-Nady"></label>
+                                <label>Date: <input type="date" name="signDate" required></label>
+                            </div>
+                            <label>Witness: <input type="text" name="witness"></label>
+                        </div>
+        
+                        <button type="submit" class="btn btn-primary">Submit & Save Agreement</button>
+                        <button type="button" class="btn"
+                            onclick="window.print()">Print / Save as PDF</button>
+                        <p id="msg"></p>
+                    </form>
+                </div>
+                <div class="footer">Page 1-2 | Mama Nady | 071 835 8666 | Digital copy stored securely</div>
+            </div>
+        
+            
+    </main>
+
+    <footer>
+        <p>&copy; <span id="currentyear"></span> Thembinkosi Gumbo | 0784907396 | South Africa</p>
+        <p>Last Modified<span id="lastModified"></span></p>>
+        <p>Mama Nady Cleaning Services | 071 835 8666 <a href="agreement.html">Agreement</a></p>
+    </footer>
+</body>
+
+</html>
