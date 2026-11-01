@@ -1,69 +1,164 @@
-// protect page
-if (localStorage.getItem('mamanady_admin_auth') !== 'true' && location.pathname.includes('admin.html')) {
-    location.href = 'admin-login.html';
+// Protect Admin Page
+if (
+    location.pathname.includes("admin.html") &&
+    localStorage.getItem("mamanady_admin_auth") !== "true"
+) {
+    location.href = "admin-login.html";
 }
 
-const emailDisplay = document.getElementById('adminEmailDisplay');
-if (emailDisplay) emailDisplay.textContent = localStorage.getItem('mamnady_admin_email') || 'Agent';
+// Display Admin Email
+const emailDisplay = document.getElementById("adminEmailDisplay");
 
+if (emailDisplay) {
+    emailDisplay.textContent =
+        localStorage.getItem("mamanady_admin_email") || "Agent";
+}
+
+// Load All Data
 function loadAll() {
-    const regs = JSON.parse(localStorage.getItem('cleoRegistrations') || '[]').slice().reverse();
-    const reqs = JSON.parse(localStorage.getItem('employerRequests') || '[]').slice().reverse();
-    const revs = JSON.parse(localStorage.getItem('mamnadyReviews') || '[]');
+    const registrations = JSON.parse(
+        localStorage.getItem("mamanadyRegistrations") || "[]"
+    ).reverse();
 
-    const regCount = document.getElementById('regCount');
-    const reqCount = document.getElementById('reqCount');
-    if (regCount) regCount.textContent = `(${regs.length})`;
-    if (reqCount) reqCount.textContent = `(${reqs.length})`;
+    const employerRequests = JSON.parse(
+        localStorage.getItem("employerRequests") || "[]"
+    ).reverse();
 
-    const regList = document.getElementById('regList');
+    const reviews = JSON.parse(
+        localStorage.getItem("mamanadyReviews") || "[]"
+    );
+
+    // Counters
+    const regCount = document.getElementById("regCount");
+    const reqCount = document.getElementById("reqCount");
+
+    if (regCount) regCount.textContent = `(${registrations.length})`;
+    if (reqCount) reqCount.textContent = `(${employerRequests.length})`;
+
+    // Registration List
+    const regList = document.getElementById("regList");
+
     if (regList) {
-        regList.innerHTML = regs.length ? regs.map(r => `
-      <div class="card"><strong>${r.fullNames}</strong> - ${r.position} - R${r.salary}
-      <br>ID: ${r.id} | 📞 ${r.phone} | 📍 ${r.address}
-      <br>Fee R${r.fee} | Signed: ${r.empName} | ${new Date(r.timestamp).toLocaleString()}
-      <br><a href="${r.signature}" target="_blank">🖊️ View Signature</a> | <a href="https://wa.me/${r.phone.replace(/[^0-9]/g, '')}" target="_blank">WhatsApp</a>
-      <br><button class="btn" style="background:#eee;margin-top:0.5rem" onclick="deleteOne('mamanadyRegistrations',${r.id_key})">Delete</button></div>
-    `).join('') : '<p>No registrations yet</p>';
+        regList.innerHTML = registrations.length
+            ? registrations.map(r => `
+                <div class="card">
+                    <strong>${r.fullNames}</strong> - ${r.position}
+                    <br>Salary: R${r.salary}
+                    <br>ID: ${r.id}
+                    <br>📞 ${r.phone}
+                    <br>📍 ${r.address}
+                    <br>Fee: R${r.fee}
+                    <br>Signed By: ${r.empName}
+                    <br><small>${new Date(r.timestamp).toLocaleString()}</small>
+
+                    ${r.signature
+                    ? `<br><a href="${r.signature}" target="_blank">🖊️ View Signature</a>`
+                    : ""
+                }
+
+                    <br><button
+                        class="btn"
+                        onclick="deleteOne('mamanadyRegistrations', ${r.id_key})"
+                        style="margin-top:10px;background:#ddd;">
+                        Delete
+                    </button>
+                </div>
+            `).join("")
+            : "<p>No registrations found.</p>";
     }
 
-    const reqList = document.getElementById('reqList');
+    // Employer Requests
+    const reqList = document.getElementById("reqList");
+
     if (reqList) {
-        reqList.innerHTML = reqs.length ? reqs.map(r => `
-      <div class="card"><strong>${r.empName}</strong> - ${r.empService}
-      <br>📞 ${r.empPhone} | 📍 ${r.empLocation} | R${r.empSalary} | ${r.empDays}
-      <br>${r.empMsg}<br><small>${new Date(r.timestamp).toLocaleString()}</small>
-      <br><a href="https://wa.me/${r.empPhone.replace(/[^0-9]/g, '')}" target="_blank" style="background:#25D366;color:white;padding:0.4rem 0.8rem;border-radius:6px;text-decoration:none">WhatsApp Employer</a>
-      <button class="btn" style="background:#eee;margin-left:0.5rem" onclick="deleteOne('employerRequests',${r.id_key})">Delete</button></div>
-    `).join('') : '<p>No employer requests yet</p>';
+        reqList.innerHTML = employerRequests.length
+            ? employerRequests.map(r => `
+                <div class="card">
+                    <strong>${r.empName}</strong>
+                    <br>📞 ${r.empPhone}
+                    <br>📍 ${r.empLocation}
+                    <br>Service: ${r.empServices}
+                    <br>Salary: R${r.empSalary}
+                    <br>Days: ${r.empDays}
+                    <br>${r.empMsg || ""}
+                    <br><small>${new Date(r.timestamp).toLocaleString()}</small>
+
+                    <br>
+                    <a
+                        href="https://wa.me/${r.empPhone.replace(/\D/g, "")}"
+                        target="_blank"
+                        class="whatsapp-btn">
+                        WhatsApp Employer
+                    </a>
+
+                    <button
+                        class="btn"
+                        onclick="deleteOne('employerRequests', ${r.id_key})"
+                        style="margin-left:10px;background:#ddd;">
+                        Delete
+                    </button>
+                </div>
+            `).join("")
+            : "<p>No employer requests found.</p>";
     }
 
-    const adminReviewList = document.getElementById('adminReviewList');
+    // Reviews
+    const adminReviewList = document.getElementById("adminReviewList");
+
     if (adminReviewList) {
-        adminReviewList.innerHTML = revs.map(r => `<div class="card"><span class="stars">${'★'.repeat(r.stars)}</span> <strong>${r.name}</strong><br>${r.text}</div>`).join('');
+        adminReviewList.innerHTML = reviews.length
+            ? reviews.map(r => `
+                <div class="card">
+                    <div class="stars">${"★".repeat(r.stars)}</div>
+                    <strong>${r.name}</strong>
+                    <p>${r.text}</p>
+                </div>
+            `).join("")
+            : "<p>No reviews available.</p>";
     }
 }
 
-function deleteOne(key, id_key) {
-    if (!confirm('Delete this entry?')) return;
-    let all = JSON.parse(localStorage.getItem(key) || '[]');
-    all = all.filter(x => x.id_key !== id_key);
-    localStorage.setItem(key, JSON.stringify(all));
-    loadAll();
-}
-function clearAll(key) {
-    if (!confirm(`Clear ALL ${key}? Cannot be undone!`)) return;
-    localStorage.removeItem(key);
+// Delete One Entry
+function deleteOne(storageKey, id_key) {
+    if (!confirm("Delete this record?")) return;
+
+    let data = JSON.parse(
+        localStorage.getItem(storageKey) || "[]"
+    );
+
+    data = data.filter(item => item.id_key !== id_key);
+
+    localStorage.setItem(
+        storageKey,
+        JSON.stringify(data)
+    );
+
     loadAll();
 }
 
-const logoutBtn = document.getElementById('logout');
+// Clear All Entries
+function clearAll(storageKey) {
+    if (!confirm(`Delete ALL data from ${storageKey}?`)) return;
+
+    localStorage.removeItem(storageKey);
+    loadAll();
+}
+
+// Logout
+const logoutBtn = document.getElementById("logout");
+
 if (logoutBtn) {
-    logoutBtn.addEventListener('click', () => {
-        localStorage.removeItem('mamanady_admin_auth');
-        location.href = 'admin-login.html';
+    logoutBtn.addEventListener("click", () => {
+        localStorage.removeItem("mamanady_admin_auth");
+        location.href = "admin-login.html";
     });
 }
 
-// load on admin page
-if (document.getElementById('regList')) loadAll();
+// Make functions available to inline buttons
+window.deleteOne = deleteOne;
+window.clearAll = clearAll;
+
+// Load Dashboard
+if (document.getElementById("regList")) {
+    loadAll();
+}

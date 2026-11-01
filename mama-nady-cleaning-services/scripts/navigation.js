@@ -1,18 +1,19 @@
-export function initNav() {
-    const navBtn = document.querySelector("#navBtn");
-    const navMenu = document.querySelector("#navMenu");
+const navBtn = document.querySelector("#navBtn");
+const navMenu = document.querySelector("#navMenu");
 
+if (navBtn && navMenu) {
     navBtn.addEventListener("click", () => {
         navMenu.classList.toggle("open");
 
-        if (navBtn.classList.contains("open")) {
+        if (navMenu.classList.contains("open")) {
             navBtn.textContent = "✖";
-            navMenu.style.transform = "rotate(180deg)";
+            navBtn.style.transform = "rotate(180deg)";
         } else {
             navBtn.textContent = "☰";
-            navMenu.style.transform = "rotate(0deg)";
+            navBtn.style.transform = "rotate(0deg)";
         }
     });
+}
     const year = document.getElementById('currentyear');
     if (year) {
         year.textContent = new Date().getFullYear();
@@ -27,4 +28,4 @@ export function initNav() {
     if (ts) {
         ts.value = new Date().toISOString();
     }
-}
+
